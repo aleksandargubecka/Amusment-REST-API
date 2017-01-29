@@ -3,30 +3,6 @@
 class Zend_Controller_Action_Helper_Help extends Zend_Controller_Action_Helper_Abstract
 {
 
-    public $resposne = array(
-        "response" => array(
-            "code" => 200,
-            "success" => true,
-            "message" => ""
-        ),
-        "data" => array()
-    );
-
-    public function init()
-    {
-        
-    }
-
-    public function postDispatch()
-    {
-        
-    }
-
-    public function preDispatch()
-    {
-
-    }
-
     public function formatRequestParams(&$requestParams)
     {
         unset($requestParams['controller']);
@@ -36,25 +12,28 @@ class Zend_Controller_Action_Helper_Help extends Zend_Controller_Action_Helper_A
         return $requestParams;
     }
 
-    public function sendJsonResponseSuccess($data, $errorMsg)
+    public function isWithDependenciesClasses($request)
     {
-        if(!empty($data)){
-            self::echoEncodedJson($data);
-            $this->getResponse()->setHttpResponseCode(200);
-        }else{
-            self::echoEncodedJson(array("error" => $errorMsg));
-            $this->getResponse()->setHttpResponseCode(400);
+        if(isset($request["dependencies"]) && !empty($request["dependencies"]))
+            return true;
+
+        return false;
+    }
+
+    public function hasDependenciesClasses($request){
+        
+        return class_exists("Application_Model_DbTable_" . $request["dependencies"]);
+    
+    }
+
+    public function getDependenciesClasses($dependencies){
+        $dependenciesFormatted = array();
+        $dependencies = explode(",", $dependencies);
+
+        foreach ($dependencies as $dependency) {
+            $dependenciesFormatted[strtolower($dependency)] = "Application_Model_DbTable_" . $dependency;
         }
-    }
 
-    public function sendJsonResponseError(Exception $exception){
-        self::echoEncodedJson(array("error" => $exception->getMessage()));
-        $this->getResponse()->setHttpResponseCode(400);
+        return $dependenciesFormatted;
     }
-
-    public static function echoEncodedJson($data)
-    {
-        echo Zend_Json::encode($data);
-    }
-
 }

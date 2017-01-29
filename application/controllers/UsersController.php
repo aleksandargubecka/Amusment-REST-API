@@ -2,48 +2,31 @@
 
 class UsersController extends Zend_Controller_Action
 {
+    private $mapper;
+    private $helper;
+    private $crudHelper;
+
     public function init()
     {
-        /* Initialize action controller here */
         $this->_helper->viewRenderer->setNoRender(true);
-    }
 
+        /* Initialize action controller here */
+        $this->mapper = new Application_Model_UsersMapper();
+        $this->helper = $this->_helper->help;
+        $this->crudHelper = $this->_helper->CrudHelper;
+    }
+    
     public function indexAction()
     {
         // action body
-        $usersMapper = new Application_Model_UsersMapper();
-        try {
-            $users = $usersMapper->fetchAll();
-            if(count($users) > 0){
-                echo Zend_Json::encode($users);
-                $this->getResponse()->setHttpResponseCode(200);
-            }else{
-                echo Zend_Json::encode(array("error" => "No data for update."));
-                $this->getResponse()->setHttpResponseCode(400);
-            }
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->get($this->mapper);
+        // action body
     }
 
     public function getAction()
     {
         // action body
-        $usersMapper = new Application_Model_UsersMapper();
-        try {
-            $user = $usersMapper->find($this->_request->getParam('id'));
-            if(count($user) > 0){
-                echo Zend_Json::encode($user);
-                $this->getResponse()->setHttpResponseCode(200);
-            }else{
-                echo Zend_Json::encode(array("error" => "No data for update."));
-                $this->getResponse()->setHttpResponseCode(400);
-            }
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));
     }
 
     public function postAction()
@@ -52,14 +35,7 @@ class UsersController extends Zend_Controller_Action
         $requestParams = $this->_request->getParams();
         $this->_helper->help->formatRequestParams($requestParams);
 
-        $usersMapper = new Application_Model_UsersMapper();
-        try {
-            echo Zend_Json::encode(array("id" => $usersMapper->insert($requestParams)));
-            $this->getResponse()->setHttpResponseCode(200);
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->insert($this->mapper, $requestParams);
     }
 
     public function putAction()
@@ -68,40 +44,13 @@ class UsersController extends Zend_Controller_Action
         $requestParams = $this->_request->getParams();
         $this->_helper->help->formatRequestParams($requestParams);
 
-        $usersMapper = new Application_Model_UsersMapper();
-        try {
-            $update = $usersMapper->update($requestParams);
-            if($update > 0){
-                echo Zend_Json::encode(array("id" => $requestParams['id']));
-                $this->getResponse()->setHttpResponseCode(200);
-            }else{
-                echo Zend_Json::encode(array("error" => "No data for update."));
-                $this->getResponse()->setHttpResponseCode(400);
-            }
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->update($this->mapper, $requestParams);
     }
 
     public function deleteAction()
     {
         // action body
-        $id = $this->_request->getParam('id');
-        $usersMapper = new Application_Model_UsersMapper();
-        try {
-            $delete = $usersMapper->delete($id);
-            if($delete > 0){
-                echo Zend_Json::encode(array("id" => $id));
-                $this->getResponse()->setHttpResponseCode(200);
-            }else{
-                echo Zend_Json::encode(array("error" => "No data for delete."));
-                $this->getResponse()->setHttpResponseCode(400);
-            }
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->delete($this->mapper, $this->_request->getParam('id'));
     }
 
 }

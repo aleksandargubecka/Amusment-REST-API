@@ -7,9 +7,6 @@
         <applicationConfigFile type="ini"/>
       </configsDirectory>
       <controllersDirectory>
-        <controllerFile controllerName="Index">
-          <actionMethod actionName="index"/>
-        </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Users">
           <actionMethod actionName="index"/>
@@ -62,9 +59,6 @@
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
         <viewScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Index">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="error"/>
           </viewControllerScriptsDirectory>

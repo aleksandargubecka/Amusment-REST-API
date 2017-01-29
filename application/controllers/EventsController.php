@@ -2,47 +2,35 @@
 
 class EventsController extends Zend_Controller_Action
 {
+    private $mapper;
+    private $helper;
+    private $crudHelper;
 
     public function init()
     {
-        /* Initialize action controller here */
         $this->_helper->viewRenderer->setNoRender(true);
+        
+        /* Initialize action controller here */
+        $this->mapper = new Application_Model_EventsMapper();
+        $this->helper = $this->_helper->help;
+        $this->crudHelper = $this->_helper->CrudHelper;
     }
+
 
     public function indexAction()
     {
         // action body
-        $eventsMapper = new Application_Model_EventsMapper();
-        try {
-            $events = $eventsMapper->fetchAll();
-            $this->_helper->help->sendJsonResponseSuccess($events, "No data found.");
-        } catch (Exception $e) {
-            $this->_helper->help->sendJsonResponseError($e);
-        }
-        // action body
+        $this->crudHelper->get($this->mapper);
     }
 
     public function getAction()
     {
         // action body
-        $eventsMapper = new Application_Model_EventsMapper();
-        try {
-            $event = $eventsMapper->find($this->_request->getParam('id'));
-            $this->_helper->help->sendJsonResponseSuccess($event[0], "No data found.");
-
-//            if(count($event) > 0){
-//                $currentEvent = $event->current();
-//                echo '<pre>';
-//                var_dump($currentEvent->findDependentRowset('Application_Model_DbTable_Comments'));
-//                echo '</pre>';
-//                echo Zend_Json::encode($event);
-//                $this->getResponse()->setHttpResponseCode(200);
-//            }else{
-//                echo Zend_Json::encode(array("error" => "No data found."));
-//                $this->getResponse()->setHttpResponseCode(400);
-//            }
-        } catch (Exception $e) {
-            $this->_helper->help->sendJsonResponseError($e);
+        if($this->helper->isWithDependenciesClasses($this->_request->getParams())){
+            $dependencies = $this->helper->getDependenciesClasses($this->_request->getParam("dependencies"));
+            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParam('id'), $dependencies);
+        }else{
+            $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));
         }
     }
 
@@ -52,14 +40,7 @@ class EventsController extends Zend_Controller_Action
         $requestParams = $this->_request->getParams();
         $this->_helper->help->formatRequestParams($requestParams);
 
-        $eventsMapper = new Application_Model_EventsMapper();
-        try {
-            echo Zend_Json::encode(array("id" => $eventsMapper->insert($requestParams)));
-            $this->getResponse()->setHttpResponseCode(200);
-        } catch (Exception $e) {
-            echo Zend_Json::encode(array("error" => $e->getMessage()));
-            $this->getResponse()->setHttpResponseCode(400);
-        }
+        $this->crudHelper->insert($this->mapper, $requestParams);
     }
 
     public function putAction()
@@ -67,27 +48,14 @@ class EventsController extends Zend_Controller_Action
         // action body
         $requestParams = $this->_request->getParams();
         $this->_helper->help->formatRequestParams($requestParams);
-        $eventsMapper = new Application_Model_EventsMapper();
-        try {
-            $update = $eventsMapper->update($requestParams);
-            $this->_helper->help->sendJsonResponseSuccess($update, "No data for update.");
-        } catch (Exception $e) {
-            $this->_helper->help->sendJsonResponseError($e);
-        }
+
+        $this->crudHelper->update($this->mapper, $requestParams);
     }
 
     public function deleteAction()
     {
         // action body
-        $id = $this->_request->getParam('id');
-        $eventsMapper = new Application_Model_EventsMapper();
-        try {
-            $delete = $eventsMapper->delete($id);
-            $id = ($delete > 0) ? intval($id) : 0;
-            $this->_helper->help->sendJsonResponseSuccess($id, "No data for delete.");
-        } catch (Exception $e) {
-            $this->_helper->help->sendJsonResponseError($e);
-        }
+        $this->crudHelper->delete($this->mapper, $this->_request->getParam('id'));
     }
 
 
