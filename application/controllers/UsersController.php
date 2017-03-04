@@ -20,13 +20,16 @@ class UsersController extends Zend_Controller_Action
     {
         // action body
         $this->crudHelper->get($this->mapper);
-        // action body
     }
 
     public function getAction()
     {
         // action body
-        $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));
+        if($this->helper->isWithDependenciesClasses($this->_request->getParams())){
+            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParams(), $this->helper->getDependenciesClasses($this->_request->getParam("dependencies")));
+        }else{
+            $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));
+        }
     }
 
     public function postAction()

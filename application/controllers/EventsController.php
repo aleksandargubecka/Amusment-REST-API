@@ -27,8 +27,7 @@ class EventsController extends Zend_Controller_Action
     {
         // action body
         if($this->helper->isWithDependenciesClasses($this->_request->getParams())){
-            $dependencies = $this->helper->getDependenciesClasses($this->_request->getParam("dependencies"));
-            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParam('id'), $dependencies);
+            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParams(), $this->helper->getDependenciesClasses($this->_request->getParam("dependencies")));
         }else{
             $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));
         }
