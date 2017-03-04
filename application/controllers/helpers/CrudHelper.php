@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * Class Zend_Controller_Action_Helper_CrudHelper
+ *
+ * Helper for working with requests and response,
+ * It's like a middleware, all the actions in controllers goes trough Zend_Controller_Action_Helper_CrudHelper
+ */
 class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_Helper_Abstract
 {
+    /**
+     * Easier generating of general response
+     * @param $data
+     * @param $errorMsg
+     */
     private function sendJsonResponseSuccess($data, $errorMsg)
     {
         if (!empty($data)) {
@@ -13,17 +24,29 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Easier generating of error response
+     * @param Exception $exception
+     */
     private function sendJsonResponseError(Exception $exception)
     {
         self::echoEncodedJson(array("error" => $exception->getMessage()));
         $this->getResponse()->setHttpResponseCode(400);
     }
 
+    /**
+     * Json encoding response data
+     * @param $data
+     */
     public static function echoEncodedJson($data)
     {
         echo Zend_Json::encode($data);
     }
 
+    /**
+     * Get all rows from mapper
+     * @param $mapper
+     */
     public function get($mapper)
     {
         try {
@@ -34,6 +57,11 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Get one row from mapper
+     * @param $mapper
+     * @param $id
+     */
     public function getOne($mapper, $id)
     {
         try {
@@ -44,6 +72,12 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Request for dynamic work with one or more dependencies
+     * @param $mapper
+     * @param $params
+     * @param array $dependencies
+     */
     public function getOneWithDependencies($mapper, $params, array $dependencies)
     {
         try {
@@ -68,6 +102,11 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Helper for inserting to mapper's database and generating response
+     * @param $mapper
+     * @param $params
+     */
     public function insert($mapper, $params)
     {
         try {
@@ -77,6 +116,11 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Helper for updating mapper's database and generating response
+     * @param $mapper
+     * @param $params
+     */
     public function update($mapper, $params)
     {
         try {
@@ -87,6 +131,11 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
         }
     }
 
+    /**
+     * Helper for deleting row and generating response
+     * @param $mapper
+     * @param $id
+     */
     public function delete($mapper, $id)
     {
         try {
