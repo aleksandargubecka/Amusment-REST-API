@@ -1,10 +1,8 @@
 <?php
 
-/**
- * Class Application_Model_Comments
- */
-class Application_Model_Comments
+class Application_Model_Type
 {
+
     /**
      * Field ID is main identifier
      * @var
@@ -18,22 +16,10 @@ class Application_Model_Comments
     protected $_title;
 
     /**
-     * Actual comment is saved in description field
+     * Description of the type
      * @var
      */
     protected $_description;
-
-    /**
-     * For what event is this comment made
-     * @var
-     */
-    protected $_event_id;
-
-    /**
-     * Is comment approved
-     * @var
-     */
-    protected $_active;
 
     /**
      * @return mixed
@@ -81,38 +67,6 @@ class Application_Model_Comments
     public function setDescription($description)
     {
         $this->_description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEventId()
-    {
-        return $this->_event_id;
-    }
-
-    /**
-     * @param mixed $event_id
-     */
-    public function setEventId($event_id)
-    {
-        $this->_event_id = $event_id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getActive()
-    {
-        return $this->_active;
-    }
-
-    /**
-     * @param mixed $active
-     */
-    public function setActive($active)
-    {
-        $this->_active = $active;
     }
 
 }

@@ -29,25 +29,9 @@ class Zend_Controller_Action_Helper_Help extends Zend_Controller_Action_Helper_A
      */
     public function isWithDependenciesClasses($request)
     {
-        if(isset($request["dependencies"]) && !empty($request["dependencies"]))
+        if(isset($request["dependencies"]) && !empty($request["dependencies"]) || isset($request["dependency"]) && !empty($request["dependency"]))
             return true;
 
         return false;
-    }
-
-    /**
-     * Getting Dependencies Classes (DbTable)
-     * @param $dependencies
-     * @return array
-     */
-    public function getDependenciesClasses($dependencies){
-        $dependenciesFormatted = array();
-        $dependencies = explode(",", $dependencies);
-
-        foreach ($dependencies as $dependency) {
-            $dependenciesFormatted[strtolower($dependency)] = "Application_Model_DbTable_" . $dependency;
-        }
-
-        return $dependenciesFormatted;
     }
 }

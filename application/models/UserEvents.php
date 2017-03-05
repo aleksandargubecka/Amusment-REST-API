@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * Class Application_Model_UserEvents
+ *
+ * This is relation table between Users table and Events
+ */
 class Application_Model_UserEvents
 {
+    /**
+     * Field ID is main identifier
+     * @var
+     */
     protected $_id;
+
+    /**
+     * user_id field saves foreign key of user identifier
+     * @var
+     */
     protected $_user_id;
+
+    /**
+     * event_id field saves foreign key of event identifier
+     * @var
+     */
     protected $_event_id;
 
     /**

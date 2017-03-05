@@ -1,14 +1,64 @@
 <?php
 
+/**
+ * Class Application_Model_Events
+ */
 class Application_Model_Events
 {
+    /**
+     * Field ID is main identifier
+     * @var
+     */
     protected $_id;
+    
+    /**
+     * Event's title
+     * @var
+     */
     protected $_title;
+    
+    /**
+     * Event's description
+     * @var
+     */
     protected $_description;
+    
+    /**
+     * Type of the event
+     * @var
+     */
     protected $_type;
+    
+    /**
+     * Is event published or draft
+     * @var
+     */
     protected $_active;
+    
+    /**
+     * Start time
+     * @var
+     */
     protected $_starts_at;
 
+    /**
+     * End time
+     * @var
+     */
+    protected $_ends_at;
+    
+    /**
+     * Created time
+     * @var
+     */
+    protected $_created_at;
+    
+    /**
+     * Last updated time
+     * @var
+     */
+    protected $_updated_at;
+    
     /**
      * @return mixed
      */
@@ -152,9 +202,6 @@ class Application_Model_Events
     {
         $this->_updated_at = $updated_at;
     }
-    protected $_ends_at;
-    protected $_created_at;
-    protected $_updated_at;
 
 }
 

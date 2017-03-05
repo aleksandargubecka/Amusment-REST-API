@@ -1,10 +1,8 @@
 <?php
 
-/**
- * Class Application_Model_UsersMapper
- */
-class Application_Model_UsersMapper
+class Application_Model_TypeMapper
 {
+
     /**
      * @var
      */
@@ -34,7 +32,7 @@ class Application_Model_UsersMapper
     public function getDbTable()
     {
         if (null == $this->_dbTable)
-            $this->setDbTable('Application_Model_DbTable_Users');
+            $this->setDbTable('Application_Model_DbTable_Type');
 
         return $this->_dbTable;
     }
@@ -83,5 +81,6 @@ class Application_Model_UsersMapper
     {
         return $this->getDbTable()->delete('id=' . $id);
     }
+
 }
 

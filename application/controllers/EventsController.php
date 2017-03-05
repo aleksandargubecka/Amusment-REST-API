@@ -55,7 +55,7 @@ class EventsController extends Zend_Controller_Action
     {
         if($this->helper->isWithDependenciesClasses($this->_request->getParams())){
             /* Select one row request */
-            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParams(), $this->helper->getDependenciesClasses($this->_request->getParam("dependencies")));
+            $this->crudHelper->getOneWithDependencies($this->mapper, $this->_request->getParams());
         }else{
             /* Select one row request */
             $this->crudHelper->getOne($this->mapper, $this->_request->getParam('id'));

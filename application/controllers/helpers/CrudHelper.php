@@ -76,30 +76,76 @@ class Zend_Controller_Action_Helper_CrudHelper extends Zend_Controller_Action_He
      * Request for dynamic work with one or more dependencies
      * @param $mapper
      * @param $params
-     * @param array $dependencies
      */
-    public function getOneWithDependencies($mapper, $params, array $dependencies)
+    public function getOneWithDependencies($mapper, $params)
     {
         try {
             $id = $params;
+            $dependency = (isset($params["dependency"]) && !empty($params["dependency"])) ? $this->getDependenciesClasses($params["dependency"]) : null;
+            $dependencies = (isset($params["dependencies"]) && !empty($params["dependencies"])) ? $this->getDependenciesClasses($params["dependencies"]) : null;
             $row = $mapper->find($id)->current();
             $rowArr = $row->toArray();
 
-            if (count($dependencies) === 1) {
-                $name = key($dependencies);
-                $single_dependency = $row->findDependentRowset($dependencies[$name])->toArray();
-                $rowArr["dependencies"] = array(
-                    $name => $single_dependency
-                );
-            } else {
-                $numericDependecies = array_values($dependencies);
-                $rowArr["dependencies"][array_search($numericDependecies[0], $dependencies)] = $row->findManyToManyRowset($numericDependecies[0],$numericDependecies[1], $numericDependecies[2])->toArray();
+            if(!empty($dependency)){
+                $rowArr['dependency'] = $this->getDependency($row, $dependency);
+                $this->sendJsonResponseSuccess($rowArr, "dNo data found.");
+                return;
             }
-
-            $this->sendJsonResponseSuccess($rowArr, "No data found.");
+            if(!empty($dependencies)){
+                $rowArr['dependency'] = $this->getDependencies($row, $dependencies);
+                $this->sendJsonResponseSuccess($rowArr, "No data found.");
+                return;
+            }
         } catch (Exception $e) {
             $this->sendJsonResponseError($e);
         }
+    }
+
+    /**
+     * Getting Dependencies Classes (DbTable)
+     * @param $dependencies
+     * @return array
+     * @throws Exception
+     */
+    public function getDependenciesClasses($dependencies){
+        $dependenciesFormatted = array();
+        $dependencies = explode(",", $dependencies);
+
+        foreach ($dependencies as $dependency) {
+            $dependency = ucfirst($dependency);
+            if(class_exists("Application_Model_DbTable_" . $dependency)){
+                $dependenciesFormatted[strtolower($dependency)] = "Application_Model_DbTable_" . $dependency;
+            }else{
+                throw new Exception("$dependency dependency not found");
+            }
+        }
+
+        return $dependenciesFormatted;
+    }
+
+    protected function getDependency($row, $dependency){
+        $dependency_data = array();
+        try{
+            if (count($dependency) === 1) {
+                $name = key($dependency);
+                $single_dependency = $row->findDependentRowset($dependency[$name])->toArray();
+                $dependency_data[$name] = $single_dependency;
+            } else {
+                $numeric_dependencies = array_values($dependency);
+                $dependency_data[array_search($numeric_dependencies[0], $dependency)] = $row->findManyToManyRowset($numeric_dependencies[0],$numeric_dependencies[1], $numeric_dependencies[2])->toArray();
+            }
+        }catch (Exception $e) {
+            $dependency_data = $e;
+        }
+        return $dependency_data;
+    }
+
+    public function getDependencies($row, $dependencies){
+        $dependency_data = array();
+        foreach ($dependencies as $name => $dependency) {
+            $dependency_data[$name] = $row->findDependentRowset($dependency)->toArray();
+        }
+        return $dependency_data;
     }
 
     /**

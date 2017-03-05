@@ -1,15 +1,62 @@
 <?php
 
+/**
+ * Class Application_Model_Users
+ */
 class Application_Model_Users
 {
+    /**
+     * Field ID is main identifier
+     * @var
+     */
     protected $_id;
+
+    /**
+     * User's email
+     * @var
+     */
     protected $_email;
+
+    /**
+     * User's password
+     * @var
+     */
     protected $_password;
+
+    /**
+     * User's first name
+     * @var
+     */
     protected $_name;
+
+    /**
+     * User's last name
+     * @var
+     */
     protected $_lastname;
+
+    /**
+     * User role
+     * @var
+     */
     protected $_role;
+
+    /**
+     * Is user active
+     * @var
+     */
     protected $_active;
+
+    /**
+     * Created time
+     * @var
+     */
     protected $_created_at;
+    
+    /**
+     * Last updated time
+     * @var
+     */
     protected $_updated_at;
 
     /**

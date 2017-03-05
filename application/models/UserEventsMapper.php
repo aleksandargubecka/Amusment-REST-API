@@ -6,12 +6,12 @@ class Application_Model_UserEventsMapper
 
     public function setDbTable($dbTable)
     {
-        if (is_string($dbTable)) {
+        if (is_string($dbTable)) 
             $dbTable = new $dbTable();
-        }
-        if (!$dbTable instanceof Zend_Db_Table_Abstract) {
+
+        if (!$dbTable instanceof Zend_Db_Table_Abstract)
             throw new Exception("Unknown table geteway!");
-        }
+        
         $this->_dbTable = $dbTable;
         return $this;
     }

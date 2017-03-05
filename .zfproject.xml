@@ -36,6 +36,13 @@
           <actionMethod actionName="put"/>
           <actionMethod actionName="delete"/>
         </controllerFile>
+        <controllerFile controllerName="Type">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="get"/>
+          <actionMethod actionName="post"/>
+          <actionMethod actionName="put"/>
+          <actionMethod actionName="delete"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -45,6 +52,7 @@
           <dbTableFile dbTableName="Events"/>
           <dbTableFile dbTableName="UserEvents"/>
           <dbTableFile dbTableName="Comments"/>
+          <dbTableFile dbTableName="Type"/>
         </dbTableDirectory>
         <modelFile modelName="Users"/>
         <modelFile modelName="UsersMapper"/>
@@ -54,6 +62,8 @@
         <modelFile modelName="UserEventsMapper"/>
         <modelFile modelName="CommentsMapper"/>
         <modelFile modelName="Comments"/>
+        <modelFile modelName="Type"/>
+        <modelFile modelName="TypeMapper"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -120,6 +130,21 @@
             <viewScriptFile forActionName="put"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="UserEvents">
+            <viewScriptFile forActionName="delete"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Type">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Type">
+            <viewScriptFile forActionName="get"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Type">
+            <viewScriptFile forActionName="post"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Type">
+            <viewScriptFile forActionName="put"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Type">
             <viewScriptFile forActionName="delete"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
