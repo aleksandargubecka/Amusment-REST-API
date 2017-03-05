@@ -2,6 +2,11 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    protected function _initLoad(){
+        Zend_Loader::loadFile('Rest_BaseController.php', '/../library');
+
+    }
+
     public function _initRoutes()
     {
 
